@@ -1,0 +1,10 @@
+
+> soulai-backend@1.0.0 start
+> node server.js
+
+
+SOUL AI Backend Bridge running on http://localhost:3001
+DKG Node connected at http://localhost
+⚠️ Memory Record Pending: Operation timed out but started. ID: fbbc010c-2a28-4257-ac1a-cb163ced0953
+⚠️ Memory Record Pending: Operation timed out but started. ID: 64b03e96-11e4-487f-82c7-de725e81c27c
+[API ERROR] DKG lookup failed for did:dkg:otp:20430/0xcdb28e93ed340ec10a71bba00a31dbfcf1bd5d37/404756: Cannot read properties of undefined (reading 'metadata')

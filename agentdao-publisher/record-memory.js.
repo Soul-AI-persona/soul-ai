@@ -1,0 +1,78 @@
+// record-memory.js
+
+import DkgClient from 'dkg.js';
+
+// --- CONFIGURATION ---
+const WALLET_PRIVATE_KEY = '0xd940e2826ff2175906e69fd146ed5fb609d60b8f4e1ec8323df3bfe19bfa744d'; 
+const DKG_NODE_URL = 'http://localhost'; // Adjust if needed
+const CREATOR_ADDRESS = '0xCf3c92e6A8147b1F786bEeCcF33b5E0F50D4E46E'; 
+
+// ⚠️ IMPORTANT: REPLACE THIS with the actual UAL/Asset Storage Hash of your published Digital Soul!
+// Example format: 'ual1...your-long-hash...'
+const DIGITAL_SOUL_UAL = 'ual1...PASTE_YOUR_DIGITAL_SOUL_UAL_HERE...'; 
+
+// --- MEMORY FRAGMENT ASSET ---
+const memoryFragmentData = {
+    '@context': 'https://soulai.org/context/v1', 
+    '@id': `memory:fragment:${Date.now()}`, // Unique ID for this memory fragment
+    '@type': 'MemoryFragment',
+    
+    // Core data of the interaction
+    interactionType: 'Q_A_Session',
+    inputHash: '0xHashOfUserQuestion',
+    responseHash: '0xHashOfSoulAnswer',
+    accuracyScore: 0.98, // The verifiable quality metric
+    
+    // 🔥 THE CRITICAL LINKING FIELD
+    digitalSoul: DIGITAL_SOUL_UAL, // Links this memory back to the Soul's identity
+    
+    timestamp: new Date().toISOString()
+};
+
+
+async function recordMemory() {
+    console.log(`\n🧠 Memory Agent starting: Recording new Memory Fragment for Soul: ${DIGITAL_SOUL_UAL}`);
+    
+    const dkg = new DkgClient({ 
+        endpoint: DKG_NODE_URL,
+        blockchain: {
+            name: 'otp:20430',
+            publicKey: CREATOR_ADDRESS,
+            privateKey: WALLET_PRIVATE_KEY,
+        },
+        maxNumberOfRetries: 30,
+        frequency: 2,
+        contentType: 'all',
+        nodeId: 'atomic-shield-160',
+    });
+
+    try {
+        // 2. Execute the publication transaction
+        const result = await dkg.asset.create(memoryFragmentData, { 
+            epochsNum: 2,
+            maxNumberOfRetries: 30,
+            frequency: 2,
+        });
+
+        if (result.UAL) {
+            console.log('✅ Memory Fragment successfully recorded on DKG!');
+            console.log(`   Fragment UAL: ${result.UAL}`);
+            console.log(`   Linked to Soul UAL: ${memoryFragmentData.digitalSoul}`);
+            console.log(`   Accuracy Score: ${memoryFragmentData.accuracyScore}`);
+        } else {
+            console.error('❌ DKG Memory Recording Failed (No UAL returned).');
+            // ... (Error logging)
+        }
+        
+    } catch (error) {
+        console.error('❌ DKG Memory Recording Failed:', error);
+        // ... (Error logging)
+    }
+}
+
+// Ensure you replace DIGITAL_SOUL_UAL before running!
+if (DIGITAL_SOUL_UAL.includes('did:dkg:otp:20430/0xcdb28e93ed340ec10a71bba00a31dbfcf1bd5d37/404719')) {
+    console.error("\nSTOP! You must replace 'PASTE_YOUR_DIGITAL_SOUL_UAL_HERE' with the UAL from your Digital Soul creation script's output.");
+} else {
+    recordMemory();
+}
