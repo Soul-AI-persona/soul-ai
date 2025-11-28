@@ -21,7 +21,7 @@ const memoryData = {
     description: "Recorded interaction details for future recall.",
     memoryType: "interaction",
     timestamp: new Date().toISOString(),
-    digitalSoul: 'did:dkg:otp:20430/0xcdb28e93ed340ec10a71bba00a31dbfcf1bd5d37/404719',
+    digitalSoul: 'did:dkg:otp:20430/0xcdb28e93ed340ec10a71bba00a31dbfcf1bd5d37/405822',
     accuracyScore: 0.95
 };
 

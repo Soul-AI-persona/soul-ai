@@ -1,4 +1,5 @@
 import { SOCIAL_CONFIG } from '../config.js';
+import { TwitterApi } from 'twitter-api-v2';
 
 // Helper for logging
 const log = (platform, msg) => console.log(`[SocialService:${platform}] ${msg}`);
@@ -64,23 +65,31 @@ export const postToTelegram = async (content) => {
 
 /**
  * Posts content to Twitter (X)
- * Note: Twitter API v2 requires OAuth 1.0a signing for posting tweets, 
- * which is complex to implement with raw fetch. 
- * In a real app, use the 'twitter-api-v2' npm package.
+ * Uses 'twitter-api-v2' for OAuth 1.0a signing.
  */
 export const postToTwitter = async (content) => {
     const { apiKey, apiSecret, accessToken, accessSecret } = SOCIAL_CONFIG.twitter;
 
-    if (!apiKey || !accessToken) {
+    if (!apiKey || !accessToken || !apiSecret || !accessSecret) {
         log('Twitter', 'Missing API Keys. Simulating post.');
         return { success: true, simulated: true, platformId: `mock-tweet-${Date.now()}` };
     }
 
-    // Placeholder for real implementation
-    // If we had the library: const client = new TwitterApi({ ... }); await client.v2.tweet(content);
-    
-    log('Twitter', 'Keys present, but raw fetch signing is complex. Simulating success for prototype.');
-    return { success: true, simulated: true, platformId: `mock-tweet-signed-${Date.now()}` };
+    try {
+        const client = new TwitterApi({
+            appKey: apiKey,
+            appSecret: apiSecret,
+            accessToken: accessToken,
+            accessSecret: accessSecret,
+        });
+
+        const tweet = await client.v2.tweet(content);
+        log('Twitter', `Posted successfully. ID: ${tweet.data.id}`);
+        return { success: true, platformId: tweet.data.id };
+    } catch (error) {
+        console.error('Twitter Post Failed:', error);
+        throw error;
+    }
 };
 
 /**

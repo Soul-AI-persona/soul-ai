@@ -49,13 +49,14 @@ async function createDigitalSoul() {
     // 1. Initialize DKG Client with the custom parameters
     const dkg = new DkgClient({ 
         endpoint: DKG_NODE_URL,
+        port: 8900,
         blockchain: {
             name: 'otp:20430',
             publicKey: CREATOR_ADDRESS,
             privateKey: WALLET_PRIVATE_KEY,
         },
-        maxNumberOfRetries: 30,
-        frequency: 2,
+        maxNumberOfRetries: 60,
+        frequency: 5,
         contentType: 'all',
         nodeId: 'atomic-shield-160',
     });
@@ -65,8 +66,8 @@ async function createDigitalSoul() {
         // FIX: Replaced the undefined variable 'content' with the defined variable 'digitalSoulAsset'
         const result = await dkg.asset.create(digitalSoulAsset, { 
             epochsNum: 2,
-            maxNumberOfRetries: 30,
-            frequency: 2,
+            maxNumberOfRetries: 60,
+            frequency: 5,
         });
 
         if (result.UAL) {

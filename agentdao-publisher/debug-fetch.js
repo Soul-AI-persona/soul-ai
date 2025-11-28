@@ -4,7 +4,7 @@ import DkgClient from 'dkg.js';
 const WALLET_PRIVATE_KEY = '0xd940e2826ff2175906e69fd146ed5fb609d60b8f4e1ec8323df3bfe19bfa744d'; 
 const DKG_NODE_URL = 'http://localhost'; 
 
-const UAL_OLD = 'did:dkg:otp:20430/0xcdb28e93ed340ec10a71bba00a31dbfcf1bd5d37/404719';
+const UAL_OLD = 'did:dkg:otp:20430/0xcdb28e93ed340ec10a71bba00a31dbfcf1bd5d37/405822';
 const MEMORY_UAL = 'did:dkg:otp:20430/0xcdb28e93ed340ec10a71bba00a31dbfcf1bd5d37/404756';
 
 async function main() {
